@@ -74,50 +74,47 @@
 		</div>
 
 		<script>
-			let orijinalListe = [];
-			const container = document.getElementById('video-container');
-			const sortSelect = document.getElementById('sortOrder');
+    // JSON'dan çekmek yerine veriyi direkt buraya gömüyoruz
+    const orijinalListe = [
+        { "id": "_vKV8j5nFko", "baslik": "RReN Karma #1" },
+        { "id": "i6GrHv0MhpU", "baslik": "RReN Karma #2" },
+        { "id": "MGPSR6gcCrA", "baslik": "RReN Karma #3" }
+    ];
 
-			// Videoları ekrana basan fonksiyon
-			function videolariGoster(liste) {
-				container.innerHTML = ''; 
-				liste.forEach(video => {
-					container.innerHTML += `
-						<a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" class="video-card">
-							<div class="thumbnail-container">
-								<img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${video.baslik}">
-								<div class="play-overlay">
-									<div class="play-icon"><i class="fa-solid fa-play"></i></div>
-								</div>
-							</div>
-						</a>`;
-				});
-			}
+    const container = document.getElementById('video-container');
+    const sortSelect = document.getElementById('sortOrder');
 
-			// JSON verisini çek
-			fetch('./videolar.json')
-				.then(response => response.json())
-				.then(data => {
-					orijinalListe = data;
-					// Sayfa ilk açıldığında En Yeni (JSON'daki son öğe en üstte) göster
-					sirala('yeni');
-				})
-				.catch(error => console.error('Hata:', error));
+    function videolariGoster(liste) {
+        container.innerHTML = ''; 
+        liste.forEach(video => {
+            container.innerHTML += `
+                <a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" class="video-card">
+                    <div class="thumbnail-container">
+                        <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${video.baslik}">
+                        <div class="play-overlay">
+                            <div class="play-icon"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                    </div>
+                </a>`;
+        });
+    }
 
-			// Sıralama mantığı
-			function sirala(secim) {
-				let gosterilecekListe = [...orijinalListe];
-				if (secim === 'yeni') {
-					gosterilecekListe.reverse(); // Listeyi ters çevir
-				}
-				videolariGoster(gosterilecekListe);
-			}
+    // İlk yüklemede göster
+    function baslat() {
+        let gosterilecek = [...orijinalListe];
+        gosterilecek.reverse(); // En yeni en başta
+        videolariGoster(gosterilecek);
+    }
 
-			// Seçim değiştiğinde çalış
-			sortSelect.addEventListener('change', (e) => {
-				sirala(e.target.value);
-			});
-		</script>
+    sortSelect.addEventListener('change', (e) => {
+        let liste = [...orijinalListe];
+        if (e.target.value === 'yeni') liste.reverse();
+        videolariGoster(liste);
+    });
+
+    baslat();
+	</script>
 	</body>
 
 </html>
+

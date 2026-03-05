@@ -95,7 +95,7 @@
 			}
 
 			// JSON verisini çek
-			fetch('videolar.json')
+			fetch('./videolar.json')
 				.then(response => response.json())
 				.then(data => {
 					orijinalListe = data;
@@ -119,4 +119,5 @@
 			});
 		</script>
 	</body>
+
 </html>

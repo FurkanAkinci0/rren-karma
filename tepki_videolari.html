@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="tr">
+	<head>
+		<title>Tepki Videoları - RReN Karma</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+		<style>
+			body { background: radial-gradient(circle at center, #1e1e1e 0%, #0f0f0f 100%) !important; background-attachment: fixed !important; padding-top: 110px !important; margin: 0 !important; }
+			.sort-container { text-align: right; margin-bottom: 20px; padding-right: 2%; }
+			#sortOrder { background: #151515; color: #fff; border: 1px solid #505050; border-radius: 5px; padding: 5px 10px; cursor: pointer; font-size: 0.8em; }
+			#main { margin-left: 0 !important; padding: 2em; width: 100% !important; }
+			.video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5em; }
+			.video-card { position: relative; border-radius: 12px; overflow: hidden; border: 1.5px solid #505050; display: block; line-height: 0; transition: transform 0.3s; }
+			.video-card:hover { transform: scale(1.03); }
+			.thumbnail-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
+			.thumbnail-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; display: block; transition: opacity 0.3s; }
+			.video-card:hover .thumbnail-container img { opacity: 1; }
+			.play-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+			.play-icon { width: 60px; height: 60px; background: rgba(0, 0, 0, 0.6); border: 2px solid #505050; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; }
+			#header, .navPanelToggle { display: none !important; }
+		</style>
+	</head>
+	<body>
+		<nav id="top-navbar">
+		<div class="nav-left"><img src="images/avatar.png" alt="Logo"></div>
+		<div class="nav-center">
+			<a href="index.html">Anasayfa</a>
+			<a href="videolar.html">Videolar</a>
+			<a href="tepki_videolari.html" class="active">Tepki Videoları</a>
+			<a href="arsiv.html">Arşiv</a>
+			<a href="gonder.html">Video Gönder</a>
+            <a href="../quiz.html">Quiz</a>
+		</div>
+			<div class="nav-right">
+				<a href="https://youtube.com/@RReNedit/videos" target="_blank" class="fa-brands fa-youtube"></a>
+				<a href="https://instagram.com/rrenkarma" target="_blank" class="fa-brands fa-instagram"></a>
+				<a href="https://x.com/RReNarsiv" target="_blank" class="fa-brands fa-x-twitter"></a>
+			</div>
+		</nav>
+		<div id="main">
+			<div class="sort-container">
+				<label for="sortOrder" style="color: #505050; margin-right: 10px;">Sıralama:</label>
+				<select id="sortOrder">
+					<option value="yeni">En Yeni</option>
+					<option value="eski">En Eski</option>
+				</select>
+			</div>
+			<div id="video-container" class="video-grid"></div>
+		</div>
+		
+		
+		<script>
+			const videoVerileri = [
+			{ "id": "Go9cr0Hbqg4", "baslik": "RRaenee RReN Karma #1 İzliyor" },
+			{ "id": "LG2lpZTDHHo", "baslik": "RRaenee RReN Karma #2 İzliyor" },
+			{ "id": "p6wGAVoHwHs", "baslik": "RRaenee RReN Karma #3 İzliyor" },
+			{ "id": "ckMjq-FrZFk", "baslik": "RRaenee RReN Karma #4 İzliyor" },
+			{ "id": "XuO2V_tCnUI", "baslik": "RRaenee RReN Karma #6-7 İzliyor" },
+			{ "id": "FX5SxCT9sxI", "baslik": "RRaenee RReN Karma #10 İzliyor" },
+			{ "id": "X4AcLtGZemo", "baslik": "RRaenee RReN Karma #11-12 İzliyor" },
+			{ "id": "f-iWEFSsaao", "baslik": "RRaenee RReN Karma #13-14-15 İzliyor" },
+			{ "id": "ay4EXthvv4o", "baslik": "RRaenee RReN Karma #16-17 İzliyor" },
+			{ "id": "Xk2fFu5N2m0", "baslik": "RRaenee RReN Karma #19 İzliyor" },
+			{ "id": "gWdN3p5aOtA", "baslik": "RRaenee RReN Karma #20 İzliyor" },
+			{ "id": "GHbcCob75Y4", "baslik": "RRaenee RReN Karma #21 İzliyor" },
+			{ "id": "yGht96uQUgs", "baslik": "RRaenee RReN Karma #22 İzliyor" },
+			{ "id": "4FAdffoSpu4", "baslik": "RRaenee RReN Karma #23 İzliyor" },
+			{ "id": "HbYA1Nsaoas", "baslik": "RRaenee RReN Karma #24 İzliyor" },
+			{ "id": "L3KFxJXavk8", "baslik": "RRaenee RReN Karma #25 İzliyor" },
+			{ "id": "5HoIh0RC8Zo", "baslik": "RRaenee RReN Karma #26 İzliyor" },
+			{ "id": "WdpnCwGxoug", "baslik": "RRaenee RReN Karma #27 İzliyor" },
+			{ "id": "24g4RahFLRM", "baslik": "RRaenee RReN Karma #28 İzliyor" },
+			{ "id": "Rdpgv6DDwD8", "baslik": "RRaenee RReN Karma #29-30 İzliyor" },
+			{ "id": "PlY43GvfDxM", "baslik": "RRaenee RReN Karma #31 İzliyor" },
+			{ "id": "H1rd6GslWs8", "baslik": "RRaenee RReN Karma #32 İzliyor" },
+			{ "id": "2NGSlswxgs0", "baslik": "RRaenee RReN Karma #33 İzliyor" },
+			{ "id": "cRRjVSZrMsM", "baslik": "RRaenee RReN Karma #34-35-36 İzliyor" },
+			{ "id": "hOT6FmqOxeI", "baslik": "RRaenee RReN Karma #37 İzliyor" },
+			{ "id": "LF4drWmvVE8", "baslik": "RRaenee RReN Karma #38 İzliyor" },
+			{ "id": "I5mhIoXa7PE", "baslik": "RRaenee RReN Karma #39 İzliyor" },
+			{ "id": "RK38iBB0CXI", "baslik": "RRaenee RReN Karma #40 İzliyor" },
+			{ "id": "Y9T9VhzEKRo", "baslik": "RRaenee RReN Karma #41 İzliyor" },
+			{ "id": "0_3tEagQNPE", "baslik": "RRaenee RReN Karma #42 İzliyor" },
+			{ "id": "u2t9pwATkh0", "baslik": "RRaenee RReN Karma #43 İzliyor" },
+			{ "id": "8mk5txwIjKs", "baslik": "RRaenee RReN Karma #44 İzliyor" },
+			{ "id": "-TMnCphpLqk", "baslik": "RRaenee RReN Karma #45-46 İzliyor" },
+			{ "id": "YE0VSsHwbUs", "baslik": "RRaenee RReN Karma #47 İzliyor" },
+			{ "id": "FWIOmOHYDLQ", "baslik": "RRaenee RReN Karma #48 İzliyor" },
+			{ "id": "Oqpp8jNFMRA", "baslik": "RRaenee RReN Karma #50 İzliyor" },
+			{ "id": "Xc26-lXxNEM", "baslik": "RRaenee RReN Karma #51 İzliyor" },
+			{ "id": "PQLYFlNO-5o", "baslik": "RRaenee RReN Karma #52 İzliyor" },
+			{ "id": "2BVWocuhsJw", "baslik": "RRaenee RReN Karma #53 İzliyor" },
+			{ "id": "GWpEHO3E77A", "baslik": "RRaenee RReN Karma #54-55 İzliyor" },
+			{ "id": "xVGC4ReLdgk", "baslik": "RRaenee RReN Karma #56-57 İzliyor" },
+			{ "id": "jOj9bFha0nM", "baslik": "RRaenee RReN Karma #58 İzliyor" },
+			{ "id": "8OvFnFp9sos", "baslik": "RRaenee RReN Karma #59 İzliyor" },
+			{ "id": "o8JBpjDvVmI", "baslik": "RRaenee RReN Karma #60-61 İzliyor" },
+			{ "id": "namDQ6agSkU", "baslik": "RRaenee RReN Karma #62 İzliyor" },
+			{ "id": "4_bbz627AK0", "baslik": "RRaenee RReN Karma #63 İzliyor" },
+			{ "id": "24QC7BYV2Us", "baslik": "RRaenee RReN Karma #64-65 İzliyor" },
+			{ "id": "hqNxSvKQF7g", "baslik": "RRaenee RReN Karma #66 İzliyor" },
+			{ "id": "qHqemCUtwjY", "baslik": "RRaenee RReN Karma #67 İzliyor" },
+			{ "id": "kWzvJeDakTo", "baslik": "RRaenee RReN Karma #68 İzliyor" },
+			{ "id": "HeZKx4q2GYg", "baslik": "RRaenee RReN Karma #70 İzliyor" },
+			{ "id": "ugkelABYjv0", "baslik": "RRaenee RReN Karma #71 İzliyor" },
+			{ "id": "hY0Y5fpfC3M", "baslik": "RRaenee RReN Karma #72 İzliyor" },
+			{ "id": "W0vlcuZKppg", "baslik": "RRaenee RReN Karma #73 İzliyor" },
+			{ "id": "t-fuuU4xWZc", "baslik": "RRaenee RReN Karma #74 İzliyor" },
+			{ "id": "3OIbXLVaQdc", "baslik": "RRaenee RReN Karma #75 İzliyor" },
+			{ "id": "uM0DQ9M5KHA", "baslik": "RRaenee RReN Karma #76 İzliyor" },
+			{ "id": "WVWTi-NDIyY", "baslik": "RRaenee RReN Karma #78 İzliyor" },
+			{ "id": "IFqOjjLUSFY", "baslik": "RRaenee RReN Karma #79 İzliyor" },
+			{ "id": "CwSRIMjBNe4", "baslik": "RRaenee RReN Karma #80 İzliyor" },
+			];
+		
+		
+		
+			const container = document.getElementById('video-container');
+			const sortSelect = document.getElementById('sortOrder');
+
+			function videolariGoster(liste) {
+				container.innerHTML = ''; 
+				liste.forEach(video => {
+					container.innerHTML += `
+						<a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" class="video-card">
+							<div class="thumbnail-container">
+								<img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${video.baslik}">
+								<div class="play-overlay">
+									<div class="play-icon"><i class="fa-solid fa-play"></i></div>
+								</div>
+							</div>
+						</a>`;
+				});
+			}
+
+			function sirala(secim) {
+				let gosterilecekListe = [...videoVerileri];
+				if (secim === 'yeni') {
+					gosterilecekListe.reverse(); 
+				}
+				videolariGoster(gosterilecekListe);
+			}
+
+			sortSelect.addEventListener('change', (e) => {
+				sirala(e.target.value);
+			});
+
+			// Sayfa açıldığında çalıştır
+			window.onload = () => sirala('yeni');
+		</script>
+	</body>
+</html>
